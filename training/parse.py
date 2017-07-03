@@ -12,6 +12,7 @@ data = training_data.data
 def tokenize(message):
     message = message.lower()
     words_arr = re.findall("[a-z0-9']+", message)
+    words_arr = list(map(lambda word: stemmer.stem(word), words_arr))
     return set(words_arr)
 
 
@@ -19,9 +20,8 @@ def count_words(data_set, class_template):
     corpus_words = collections.defaultdict(lambda: class_template.copy())
     for data in data_set:
         for word in tokenize(data['text']):
-            stemmed_word = stemmer.stem(word)
-            corpus_words[stemmed_word]['_total'] += 1
-            corpus_words[stemmed_word][data['class']] += 1
+            corpus_words[word]['_total'] += 1
+            corpus_words[word][data['class']] += 1
             # class_words[data['class']].append(stemmed_word)
     return corpus_words
 
