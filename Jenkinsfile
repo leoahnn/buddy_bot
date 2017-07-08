@@ -1,8 +1,6 @@
 pipeline {
   agent {
-    image 'python:2.7-slim'
-    label 'aws-agents'
-    args '-v /tmp:/tmp'
+    docker 'python:2.7-slim'
   }
 
   environment {
@@ -30,12 +28,12 @@ pipeline {
     always {
       deleteDir()
     }
-  }
-  success {
-    mail(from: "heyo@test.com",
-         to: "leosayger@gmail.com",
-         subject: "passed",
-         body: "something something")
+    success {
+      mail(from: "heyo@test.com",
+           to: "leosayger@gmail.com",
+           subject: "passed",
+           body: "something something")
+    }
   }
 
   options {
